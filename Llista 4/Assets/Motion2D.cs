@@ -23,8 +23,8 @@ public class Motion2D : MonoBehaviour
 
         public Wall(Vector2 normal, float disp, float epsilon)
         {
-            this.normalVector = normal;
-            this.displacement = disp;
+            this.normalVector = normal.normalized;
+            this.displacement = disp / normal.magnitude;
             this.epsilonFactor = epsilon;
         }
     }
@@ -37,9 +37,9 @@ public class Motion2D : MonoBehaviour
     {
         triangle = new Wall[]
         {
-            new Wall(new Vector2(0,5).normalized, 0, epsilon),
-            new Wall(new Vector2(5,2.5f).normalized, 0, epsilon),
-            new Wall(new Vector2(-5, 2.5f).normalized, 0, epsilon),
+            new Wall(new Vector2(0,1), 0, epsilon),
+            new Wall(new Vector2(-5,-2.5f), 0, epsilon),
+            new Wall(new Vector2(-5, -2.5f), 25, epsilon),
         };
 
         position = new Vector2(1, 1);
@@ -50,6 +50,7 @@ public class Motion2D : MonoBehaviour
 
         transform.position = position;
     }
+
 
 
     void Update()
@@ -109,8 +110,8 @@ public class Motion2D : MonoBehaviour
             Vector2 tempPos, tempVel;
             (tempPos, tempVel) = CheckWallCollision(triangle[i], finalPos, oldPos, finalVel, oldVel);
 
-            if (tempPos != finalPos) { i = 0; }
-            else { i++; }
+            if (tempPos != finalPos)  i = 0; 
+            else i++; 
 
             finalPos = tempPos;
             finalVel = tempVel;
